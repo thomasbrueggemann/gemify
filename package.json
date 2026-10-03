@@ -8,7 +8,8 @@
     "start": "node server.js",
     "dev": "node --watch server.js",
     "test": "node --test tests/*.test.js",
-    "check": "node lib/check.mjs"
+    "check": "node lib/check.mjs",
+    "screenshots": "node tools/screenshots.mjs"
   },
   "engines": {
     "node": ">=22"
@@ -16,5 +17,8 @@
   "dependencies": {
     "@anthropic-ai/claude-agent-sdk": "^0.3.288",
     "@anthropic-ai/sdk": "^0.131.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0"
   }
 }

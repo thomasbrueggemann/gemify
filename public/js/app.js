@@ -2,7 +2,7 @@
 // the phone's photos, asks the server to build the game, configures seats and
 // runs the rules (in the authority iframe). Other browsers join as guests.
 //
-// Authority model (as in spanish-game): the host runs the rules and sends each
+// Authority model: the host runs the rules and sends each
 // guest a playerView() snapshot; guests only send intents ({action}). The host
 // checks which seat an intent comes from, so a guest can only move for itself.
 
@@ -200,7 +200,7 @@ const openCapture = async () => {
 }
 
 const phoneJoined = peerId => {
-  setStatus($('#phone-status'), 'Phone connected — follow the steps on it.', 'ok')
+  setStatus($('#phone-status'), 'Phone connected', 'ok')
   // Let the phone reconcile what we already have (e.g. after it reloaded).
   app.room.send('status', {
     stage: app.build ? 'build' : app.game && document.body.dataset.view !== 'capture' ? 'ready' : 'collect',

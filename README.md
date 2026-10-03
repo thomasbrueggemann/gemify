@@ -14,6 +14,46 @@ browser game you can play against bots, on one screen, or online with friends.
 4. In the lobby, pick the number of players and set each seat to *same screen*,
    *bot* or *online player*. Friends join with the invite QR code or link.
 
+## Screenshots
+
+**Scan with your phone.** The phone asks for every rulebook page, then the components. Each photo goes straight to the computer.
+
+<p>
+  <img src="docs/screenshots/02-phone-rulebook.png" width="24%" alt="Phone scanner: rulebook step">
+  <img src="docs/screenshots/03-phone-components.png" width="24%" alt="Phone scanner: components step">
+  <img src="docs/screenshots/06-phone-building.png" width="24%" alt="Phone showing build progress">
+</p>
+
+**The photos arrive on the big screen**, where you start the build:
+
+<img src="docs/screenshots/04-photos-arrived.png" alt="Host screen with the QR code and the received photos">
+
+**Claude builds the game.** Its reasoning streams in, and the rules test plays the game with bots and sends any problems back for a fix. This screenshot replays a scripted event stream; the UI is real.
+
+<img src="docs/screenshots/05-building.png" alt="Build progress with rules test results">
+
+**Pick the players.** Each seat can be on the same screen, a bot, or an online friend who joins with the invite code.
+
+<img src="docs/screenshots/07-lobby.png" alt="Lobby with a host and an online player">
+
+**Play.** The host runs the rules; everyone sees the same 3D table.
+
+<p>
+  <img src="docs/screenshots/08-playing.png" width="49%" alt="Host playing Connect Four">
+  <img src="docs/screenshots/09-playing-guest.png" width="49%" alt="Guest playing the same game">
+</p>
+
+<details><summary>Home screen</summary>
+
+<img src="docs/screenshots/01-home.png" alt="Gemify home screen">
+</details>
+
+The screenshots are generated with Playwright against the real app (a host, a phone and a second player), using the built-in Connect Four demo. To regenerate them:
+
+```bash
+npm run screenshots
+```
+
 ## Run it
 
 ```bash
@@ -92,9 +132,7 @@ the whole runtime and multiplayer path.
                     guests (index.html?join=CODE) ◀── per-seat views / intents (WebRTC) ──┘
 ```
 
-### Multiplayer: same approach as spanish-game
-
-The setup comes from [spanish-game](https://github.com/thomasbrueggemann/spanish-game):
+### Multiplayer
 
 - [Trystero](https://trystero.dev/) over WebRTC, with peers discovered through
   public Nostr relays. Game traffic and photos never touch our server.
@@ -105,7 +143,7 @@ The setup comes from [spanish-game](https://github.com/thomasbrueggemann/spanish
   the seat bound to its client id, and the generated `applyAction` also checks
   turn order.
 
-On top of that, Gemify adds:
+On top of that:
 
 - **Roles.** Every peer announces itself with `hi`: the phone as `scanner`,
   friends as `player`. One room covers the whole session.
@@ -168,6 +206,7 @@ public/frame.html, js/frame.js    sandboxed runtime: authority (rules, bots) or 
 public/examples/connect-four.js   reference game for the contract
 games/<id>/               meta.json, game.js (+ older versions), photos/
 tests/                    node --test, no network needed
+tools/screenshots.mjs     Playwright: regenerates docs/screenshots/
 ```
 
 ## Tests

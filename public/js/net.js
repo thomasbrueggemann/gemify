@@ -1,5 +1,5 @@
 // Peer-to-peer rooms: Trystero over WebRTC, peers discovered through Nostr
-// relays (same approach as spanish-game). No game traffic touches our server.
+// relays. No game traffic touches our server.
 //
 // A room is identified by a 6-character code that is also its password. The
 // host browser owns the room; phones join it as "scanner", other browsers as

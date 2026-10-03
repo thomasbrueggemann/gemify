@@ -99,7 +99,7 @@ export function createRenderer({THREE, addons, canvasHost, uiHost, sendAction}) 
   const scene = new THREE.Scene()
   scene.background = new THREE.Color('#1b1f2a')
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100)
-  camera.position.set(0, 4.2, 13)
+  camera.position.set(2.6, 5.2, 15)
   const controls = new addons.OrbitControls(camera, renderer.domElement)
   controls.target.set(0, 3.2, 0)
   controls.enablePan = false

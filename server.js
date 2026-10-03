@@ -17,7 +17,7 @@ import {generateGame, repairGame, MODEL, BACKEND} from './lib/generate.js'
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url))
 const PUBLIC = path.join(ROOT, 'public')
-const GAMES = path.join(ROOT, 'games')
+const GAMES = path.resolve(process.env.GEMIFY_GAMES_DIR || path.join(ROOT, 'games'))
 const CERTS = path.join(ROOT, '.cert')
 const PORT = Number(process.env.PORT || 3000)
 const HTTPS_PORT = Number(process.env.HTTPS_PORT || PORT + 443)
