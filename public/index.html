@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#14161f">
+  <title>Gemify</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💎</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">💎 <span>Gemify</span></a>
+    <div class="room-chip" id="room-chip" hidden></div>
+  </header>
+
+  <!-- ── Home ───────────────────────────────────────────────────── -->
+  <main class="view" id="v-home">
+    <section class="hero">
+      <h1>Turn the board game on your table into a game in your browser.</h1>
+      <p class="lede">Photograph the rulebook and the pieces with your phone. Claude reads the rules, builds a 3D version, and you play it here: against bots, on one screen, or online with friends.</p>
+      <div class="hero-actions">
+        <button class="btn primary big" id="btn-new">📷 Scan a new game</button>
+        <form class="join" id="form-join">
+          <input id="join-code" placeholder="Room code" autocomplete="off" autocapitalize="characters" maxlength="7" aria-label="Room code">
+          <button class="btn" type="submit">Join a friend</button>
+        </form>
+      </div>
+      <p class="warn" id="cred-warn" hidden>The server has no Anthropic credentials. Set <code>ANTHROPIC_API_KEY</code> before you build a game (the demo works without).</p>
+    </section>
+    <section>
+      <h2>Your games</h2>
+      <div class="games" id="games"><p class="muted">Loading…</p></div>
+    </section>
+  </main>
+
+  <!-- ── Capture: phone sends photos here ──────────────────────────── -->
+  <main class="view" id="v-capture" hidden>
+    <div class="capture">
+      <aside class="card qr-card">
+        <h2>1 · Scan with your phone</h2>
+        <img id="qr-phone" class="qr" alt="QR code that opens the Gemify scanner on your phone">
+        <p class="code-line">Room <strong id="room-code"></strong></p>
+        <a class="small-link" id="phone-link" target="_blank" rel="noopener"></a>
+        <p class="status" id="phone-status"><span class="dot"></span> Waiting for your phone…</p>
+        <p class="warn" id="phone-warn" hidden></p>
+      </aside>
+      <section class="card">
+        <h2>2 · Photos</h2>
+        <p class="muted">Your phone will ask for every page of the rulebook, then for all the components. They appear here as they arrive.</p>
+        <h3>Rulebook <span class="count" id="count-rules">0</span></h3>
+        <div class="thumbs" id="thumbs-rules"></div>
+        <h3>Components <span class="count" id="count-components">0</span></h3>
+        <div class="thumbs" id="thumbs-components"></div>
+        <details class="desk-upload">
+          <summary>No phone? Add photos from this computer</summary>
+          <label class="btn small">Rulebook pages… <input type="file" accept="image/*" multiple data-kind="rules" hidden></label>
+          <label class="btn small">Components… <input type="file" accept="image/*" multiple data-kind="components" hidden></label>
+        </details>
+        <label class="notes-label">Notes for Claude <span class="muted">(optional)</span>
+          <textarea id="notes" rows="2" placeholder="e.g. We use the 2-player variant. The yellow cards are from an expansion."></textarea>
+        </label>
+        <div class="row">
+          <button class="btn ghost" data-go="home">Cancel</button>
+          <button class="btn primary" id="btn-build" disabled>3 · Build the game with Claude</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ── Build: Claude at work ─────────────────────────────────────── -->
+  <main class="view" id="v-build" hidden>
+    <section class="card build">
+      <div class="gem-spinner" aria-hidden="true">💎</div>
+      <h2 id="build-title">Claude is building your game</h2>
+      <p class="stage" id="build-stage">Starting…</p>
+      <div class="bar"><div id="build-bar"></div></div>
+      <p class="muted small" id="build-meta"></p>
+      <div class="thinking" id="build-thinking" aria-live="polite"></div>
+      <ul class="checks" id="build-checks"></ul>
+      <div class="row" id="build-actions" hidden>
+        <button class="btn ghost" data-go="home">Back</button>
+        <button class="btn primary" id="btn-retry">Try again</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ── Lobby: seats and invites ──────────────────────────────────── -->
+  <main class="view" id="v-lobby" hidden>
+    <div class="lobby">
+      <section class="card">
+        <h1 class="game-title" id="lobby-title"></h1>
+        <div class="rules md" id="lobby-rules"></div>
+        <div class="warn" id="lobby-verify" hidden></div>
+      </section>
+      <section class="card">
+        <h2>Players</h2>
+        <div class="seat-count">
+          <button class="btn small" id="seat-minus" aria-label="Fewer players">−</button>
+          <span id="seat-n">2</span> players
+          <button class="btn small" id="seat-plus" aria-label="More players">+</button>
+          <span class="muted small" id="seat-range"></span>
+        </div>
+        <ol class="seats" id="seats"></ol>
+        <div class="invite" id="invite">
+          <img id="qr-invite" class="qr small" alt="QR code to join this game">
+          <div>
+            <p><strong>Invite friends</strong> — they open this link or scan the code, and take an “Online player” seat.</p>
+            <p class="code-line">Room <strong class="room-code-copy"></strong></p>
+            <button class="btn small" id="btn-copy">Copy invite link</button>
+          </div>
+        </div>
+        <div class="row">
+          <button class="btn ghost" data-go="home">Back</button>
+          <button class="btn primary big" id="btn-start">▶ Start game</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ── Guest waiting room ────────────────────────────────────────── -->
+  <main class="view" id="v-guest" hidden>
+    <section class="card narrow">
+      <h2 id="guest-title">Joining…</h2>
+      <p class="status" id="guest-status"><span class="dot"></span> Connecting to the room…</p>
+      <label>Your name <input id="guest-name" maxlength="20" autocomplete="nickname"></label>
+      <ol class="seats readonly" id="guest-seats"></ol>
+      <button class="btn ghost" data-go="home">Leave</button>
+    </section>
+  </main>
+
+  <!-- ── Play ──────────────────────────────────────────────────────── -->
+  <main class="view play" id="v-play" hidden>
+    <div class="play-bar">
+      <button class="btn small" id="btn-exit" title="Leave the game">✕</button>
+      <strong id="play-title"></strong>
+      <button class="btn small" id="btn-rules">Rules</button>
+      <button class="btn small" id="btn-restart" hidden>Restart</button>
+      <button class="btn small" id="btn-invite" hidden>Invite</button>
+    </div>
+    <div class="crash" id="crash" hidden>
+      <div>
+        <strong>The game hit a bug.</strong>
+        <code id="crash-msg"></code>
+      </div>
+      <button class="btn small primary" id="btn-fix">🛠 Fix it with Claude</button>
+      <button class="btn small ghost" id="btn-crash-close">Dismiss</button>
+    </div>
+    <dialog id="dlg-rules"><div class="md" id="dlg-rules-body"></div><form method="dialog"><button class="btn">Close</button></form></dialog>
+  </main>
+
+  <!-- Lives outside the views so the iframe keeps a real size (and its WebGL
+       context) while the lobby is showing; CSS reveals it during play. -->
+  <div class="stage-frame" id="game-host"></div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

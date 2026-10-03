@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Secrets: never commit credentials or keys
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.p12
+.cert/
+
+# Generated games: user photos and Claude output, local to each install
+games/*
+!games/.gitkeep
+
+# Local tooling and OS noise
+.claude/
+.DS_Store
+*.log
+npm-debug.log*

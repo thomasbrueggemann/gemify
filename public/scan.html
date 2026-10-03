@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#14161f">
+  <title>Gemify scanner</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💎</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="phone">
+  <header class="topbar">
+    <span class="brand">💎 <span>Gemify</span></span>
+    <span class="room-chip" id="chip"></span>
+  </header>
+
+  <main class="view" id="s-connect">
+    <section class="card narrow center">
+      <div class="gem-spinner" aria-hidden="true">💎</div>
+      <h2>Connecting to the big screen…</h2>
+      <p class="status" id="connect-status"><span class="dot"></span> Looking for room…</p>
+      <form id="form-code" hidden>
+        <p>Type the room code shown on the computer:</p>
+        <input id="code" maxlength="7" autocapitalize="characters" autocomplete="off" placeholder="ABC234" aria-label="Room code">
+        <button class="btn primary" type="submit">Connect</button>
+      </form>
+    </section>
+  </main>
+
+  <main class="view" id="s-rules" hidden>
+    <p class="step">Step 1 of 2</p>
+    <h1>The rulebook</h1>
+    <p class="lede">Photograph <strong>every page</strong>, in order. Lay it flat, fill the frame, avoid glare. Claude reads the rules from these.</p>
+    <div class="capture-buttons">
+      <label class="btn primary big camera">📷 Take photo<input type="file" accept="image/*" capture="environment" data-kind="rules" hidden></label>
+      <label class="btn small ghost">From library<input type="file" accept="image/*" multiple data-kind="rules" hidden></label>
+    </div>
+    <div class="thumbs phone-thumbs" id="list-rules"></div>
+    <div class="sticky-actions">
+      <button class="btn primary big" id="to-components" disabled>Next: the components →</button>
+    </div>
+  </main>
+
+  <main class="view" id="s-components" hidden>
+    <p class="step">Step 2 of 2</p>
+    <h1>The components</h1>
+    <p class="lede">Now everything in the box. One photo per kind of thing is plenty:</p>
+    <ul class="chips">
+      <li>The board</li>
+      <li>Each card type, fanned out face-up</li>
+      <li>Pieces &amp; pawns</li>
+      <li>Tokens, money, dice</li>
+      <li>Player boards &amp; aids</li>
+    </ul>
+    <div class="capture-buttons">
+      <label class="btn primary big camera">📷 Take photo<input type="file" accept="image/*" capture="environment" data-kind="components" hidden></label>
+      <label class="btn small ghost">From library<input type="file" accept="image/*" multiple data-kind="components" hidden></label>
+    </div>
+    <div class="thumbs phone-thumbs" id="list-components"></div>
+    <label class="notes-label">Anything Claude should know? <span class="muted">(optional)</span>
+      <textarea id="notes" rows="2" placeholder="e.g. We play the 2-player variant"></textarea>
+    </label>
+    <div class="sticky-actions">
+      <button class="btn ghost" id="back-rules">← Rulebook</button>
+      <button class="btn primary big" id="send" disabled>✨ Build my game</button>
+    </div>
+  </main>
+
+  <main class="view" id="s-status" hidden>
+    <section class="card narrow center">
+      <div class="gem-spinner" id="status-spinner" aria-hidden="true">💎</div>
+      <h2 id="status-title">All photos are on the big screen</h2>
+      <p class="stage" id="status-text">Claude is starting…</p>
+      <button class="btn" id="again" hidden>Scan another game</button>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script type="module" src="/js/scan.js"></script>
+</body>
+</html>

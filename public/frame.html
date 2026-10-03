@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Gemify game</title>
+  <!-- Loaded inside <iframe sandbox="allow-scripts">: generated code gets an
+       opaque origin, so it cannot read the parent page, cookies or storage. -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+    }
+  }
+  </script>
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #14161f; color: #f4f1ea; font-family: system-ui, sans-serif; touch-action: none; }
+    #canvas, #ui { position: fixed; inset: 0; }
+    #canvas canvas { display: block; }
+    #ui { pointer-events: none; }
+    #boot { position: fixed; inset: 0; display: grid; place-items: center; font-size: 15px; opacity: .7; }
+  </style>
+</head>
+<body>
+  <div id="canvas"></div>
+  <div id="ui"></div>
+  <div id="boot">Setting up the table…</div>
+  <script type="module" src="/js/frame.js"></script>
+</body>
+</html>
